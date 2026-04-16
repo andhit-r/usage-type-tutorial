@@ -19,6 +19,8 @@ pengeluaran karyawan, mencakup:
 | [Reimbursement](use-cases/reimbursement.md) | Penerapan pada `hr.reimbursement` |
 | [Cash Advance](use-cases/cash-advance.md) | Penerapan pada `hr.cash_advance` |
 | [Cash Advance Settlement](use-cases/cash-advance-settlement.md) | Penerapan pada `hr.cash_advance_settlement` |
+| [Stock Move](use-cases/stock-move.md) | Penerapan `debit_usage_id` + `credit_usage_id` pada `stock.move` |
+| [Outsource Work](use-cases/outsource-work.md) | Penerapan pada `outsource_work` dengan usage dikonfigurasi di `ir.model` |
 
 ---
 
@@ -38,6 +40,11 @@ graph TD
     F[hr.reimbursement_line] -->|inherit| E
     G[hr.cash_advance_line] -->|inherit| E
     H[hr.cash_advance_settlement_line] -->|inherit| E
+    I[outsource_work] -->|inherit| E
+
+    PT[stock.picking.type] -->|debit/credit_usage_id| A
+    SM[stock.move] -->|debit_account_id<br/>credit_account_id| C
+    PT -->|konfigurasi| SM
 ```
 
 ---
