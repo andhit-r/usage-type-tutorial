@@ -65,5 +65,7 @@ nav:
       - Reimbursement: use-cases/reimbursement.md
       - Cash Advance: use-cases/cash-advance.md
       - Cash Advance Settlement: use-cases/cash-advance-settlement.md
+      - Stock Move (Debit & Kredit): use-cases/stock-move.md
+      - Outsource Work: use-cases/outsource-work.md
   - Referensi:
       - Ringkasan Perbandingan: reference/comparison.md

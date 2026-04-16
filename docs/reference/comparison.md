@@ -66,13 +66,33 @@ flowchart LR
 
 ---
 
+## Perbandingan Semua Use Case
+
+| Aspek | HR Expense (Reimburse/CA/Settlement) | Stock Move | Outsource Work |
+|---|---|---|---|
+| Modul | `ssi_hr_reimbursement` / `ssi_hr_cash_advance` | `ssi_stock_account` | `ssi_outsource_work` |
+| Jumlah usage per record | 1 (`usage_id`) | 2 (`debit_usage_id` + `credit_usage_id`) | 1 (`usage_id`) |
+| Konfigurasi usage di | `hr.expense_type` | `stock.picking.type` | `ir.model` |
+| Metode seleksi | Default dari expense type | Manual / Python Code | Fixed / Python Code |
+| Inherit mixin | `mixin.product_line_account` (di line) | \u2014 | `mixin.product_line_account` |
+| Output jurnal | AML per baris dokumen | AML debit + kredit per move | AML di outstanding batch |
+| `account_id` dipakai di jurnal | ✅ Ya (kecuali CA line) | ✅ Ya (debit & kredit) | ✅ Ya |
+
+---
+
 ## Rangkuman Konfigurasi yang Diperlukan
 
 Untuk menggunakan fitur ini dengan benar, pastikan konfigurasi berikut sudah ada:
 
 1. **`product.usage_type`** — buat usage type dengan kode unik dan `account_id`
 2. **Produk** — opsional: konfigurasi `product.account` untuk override akun per produk
-3. **`hr.expense_type`**:
+3. **HR Expense** (`hr.expense_type`):
    - Set `allowed_product_usage_ids` → usage yang boleh dipilih
    - Set `default_product_usage_id` → usage yang otomatis terisi
-4. **Transaksi** — pilih `type_id` yang benar di header, lalu input baris produk
+4. **Stock Move** (`stock.picking.type`):
+   - Set `debit_account_method` + `debit_usage_id` (atau `debit_account_code`)
+   - Set `credit_account_method` + `credit_usage_id` (atau `credit_account_code`)
+5. **Outsource Work** (`ir.model` dari dokumen induk):
+   - Set `outsource_work_usage_selection_method`
+   - Set `outsource_work_usage_ids` (Fixed) atau `outsource_work_usage_python_code` (Python)
+6. **Transaksi** — pilih tipe/dokumen yang sudah dikonfigurasi, lalu input data

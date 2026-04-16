@@ -7,11 +7,13 @@ modul HR Expense SSI.
 
 ## Ringkasan Objek
 
-| Header (Dokumen) | Baris (Line) | Mixin di Line | Modul |
+| Header (Dokumen) | Baris (Line) | Mixin | Modul |
 |---|---|---|---|
 | `hr.reimbursement` | `hr.reimbursement_line` | `mixin.product_line_account` | `ssi_hr_reimbursement` |
 | `hr.cash_advance` | `hr.cash_advance_line` | `mixin.product_line_account` | `ssi_hr_cash_advance` |
 | `hr.cash_advance_settlement` | `hr.cash_advance_settlement_line` | `mixin.product_line_account` | `ssi_hr_cash_advance` |
+| `stock.move` | _(dokumen tunggal, bukan line)_ | — | `ssi_stock_account` |
+| `outsource_work` | _(dokumen tunggal, bukan line)_ | `mixin.product_line_account` | `ssi_outsource_work` |
 
 ---
 
@@ -31,6 +33,14 @@ Ketiga objek mengikuti **pola yang sama**:
 
 3. Saat dokumen di-post/done, `account_id` dari baris digunakan untuk membuat
    **journal entry** (`account.move.line`).
+
+!!! info "Variasi Pola"
+    `stock.move` dan `outsource_work` mengikuti varian pola ini:
+
+    - **`stock.move`** — menggunakan **dua** usage (`debit_usage_id` + `credit_usage_id`)
+      yang dikonfigurasi di `stock.picking.type`, bukan di expense type.
+    - **`outsource_work`** — menggunakan satu `usage_id` dari `mixin.product_line_account`,
+      tetapi pembatasan usage dikonfigurasi di `ir.model` (bukan `hr.expense_type`).
 
 ---
 
